@@ -395,7 +395,9 @@ cmMakefile::IncludeScope::~IncludeScope()
       }
     }
   this->Makefile->PopSnapshot(this->ReportError);
-
+  auto lfc = this->Makefile->GetExecutionContext();
+  lfc.Line = lfc.CloseParenLine + 1;
+  this->Makefile->CreateArbitrarySnapshot(lfc);
   this->Makefile->PopFunctionBlockerBarrier(this->ReportError);
 }
 
@@ -5170,6 +5172,9 @@ cmMakefile::FunctionPushPop::FunctionPushPop(cmMakefile* mf,
 cmMakefile::FunctionPushPop::~FunctionPushPop()
 {
   this->Makefile->PopFunctionScope(this->ReportError);
+  cmListFileContext lfc = this->Makefile->GetExecutionContext();
+  lfc.Line = lfc.CloseParenLine + 1;
+  this->Makefile->CreateArbitrarySnapshot(lfc);
 }
 
 
@@ -5185,6 +5190,9 @@ cmMakefile::MacroPushPop::MacroPushPop(cmMakefile* mf,
 cmMakefile::MacroPushPop::~MacroPushPop()
 {
   this->Makefile->PopMacroScope(this->ReportError);
+  cmListFileContext lfc = this->Makefile->GetExecutionContext();
+  lfc.Line = lfc.CloseParenLine + 1;
+  this->Makefile->CreateArbitrarySnapshot(lfc);
 }
 
 cmMakefileCall::cmMakefileCall(cmMakefile* mf, const cmCommandContext& lfc,
