@@ -756,6 +756,8 @@ if (LIBUV_LIBRARY
   add_library(CMakeServerLib
     cmServer.cxx
     cmServer.h
+    cmServerCompleter.cxx
+    cmServerCompleter.h
     cmServerDiff.cxx
     cmServerDiff.h
     cmServerParser.cxx
